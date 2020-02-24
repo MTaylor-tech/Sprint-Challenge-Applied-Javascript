@@ -42,7 +42,6 @@ function makeCarousel () {
   leftButton.textContent = ` < `;
   leftButton.style.zIndex = `2`;
   leftButton.style.left = `27%`;
-  leftButton.addEventListener('click',()=>leftButtonPressed(carousel));
   carousel.appendChild(leftButton);
 
   addImage(carousel, `./assets/carousel/trees.jpeg`, true);
@@ -59,30 +58,26 @@ function makeCarousel () {
   rightButton.textContent = ` > `;
   rightButton.style.zIndex = `2`;
   rightButton.style.right = `27%`;
-  rightButton.addEventListener('click',()=>rightButtonPressed(carousel));
   carousel.appendChild(rightButton);
 
-  window.addEventListener('load',()=>onLoad(carousel));
+  leftButton.addEventListener('click',()=>leftButtonPressed(carousel, leftButton, rightButton));
+  rightButton.addEventListener('click',()=>rightButtonPressed(carousel, rightButton, leftButton));
 }
 
-function onLoad (imageContainer) {
-  let images = imageContainer.childNodes;
-  //gsap.to(images[1], {duration: 0, x: -500});
-  //gsap.to(images[2], {duration: 0, x: -500});
-  //gsap.to(images[images.length-3], {duration: 0, x: 1500});
-  //gsap.to(images[images.length-2], {duration: 0, x: 1500});
-}
-
-function leftButtonPressed (imageContainer) {
+function leftButtonPressed (imageContainer, leftButton, rightButton) {
   let images = imageContainer.childNodes;
   imageContainer.insertBefore(images[images.length-2],images[1]);
   gsap.fromTo(imageContainer, {x: `-12.5%`}, {duration: 1, x: 0});
+  gsap.fromTo(leftButton, {x: `6.25%`}, {duration: 1, x: 0});
+  gsap.fromTo(rightButton, {x: `6.25%`}, {duration: 1, x: 0});
 }
 
-function rightButtonPressed (imageContainer) {
+function rightButtonPressed (imageContainer, rightButton, leftButton) {
   let images = imageContainer.childNodes;
   imageContainer.insertBefore(images[1],images[images.length-1]);
   gsap.fromTo(imageContainer, {x: `12.5%`}, {duration: 1, x: 0});
+  gsap.fromTo(rightButton, {x: `-6.25%`}, {duration: 1, x: 0});
+  gsap.fromTo(leftButton, {x: `-6.25%`}, {duration: 1, x: 0});
 }
 
 makeCarousel();
