@@ -19,11 +19,11 @@
 */
 const carouselContainer = document.querySelector('.carousel-container');
 
-function addImage (carousel, url) {
+function addImage (container, url, isVisible) {
   const image = document.createElement('img');
   image.src = url;
-  image.style.display = `inline-block`;
-  carousel.appendChild(image);
+  if (isVisible) { image.style.display = `inline-block`; }
+  container.appendChild(image);
 }
 
 function makeCarousel () {
@@ -35,19 +35,47 @@ function makeCarousel () {
   const leftButton = document.createElement('div');
   leftButton.classList.add('left-button');
   leftButton.textContent = ` < `;
+  leftButton.addEventListener('click',()=>leftButtonPressed(carousel));
   carousel.appendChild(leftButton);
 
-  addImage(carousel, `./assets/carousel/mountains.jpeg`);
-  addImage(carousel, `./assets/carousel/computer.jpeg`);
-  addImage(carousel, `./assets/carousel/trees.jpeg`);
-  addImage(carousel, `./assets/carousel/turntable.jpeg`);
+  addImage(carousel, `./assets/carousel/trees.jpeg`, false);
+  addImage(carousel, `./assets/carousel/turntable.jpeg`, false);
+  addImage(carousel, `./assets/carousel/mountains.jpeg`, true);
+  addImage(carousel, `./assets/carousel/computer.jpeg`, true);
+  addImage(carousel, `./assets/carousel/trees.jpeg`, true);
+  addImage(carousel, `./assets/carousel/turntable.jpeg`,true);
+  addImage(carousel, `./assets/carousel/mountains.jpeg`, false);
+  addImage(carousel, `./assets/carousel/computer.jpeg`, false);
 
   const rightButton = document.createElement('div');
   rightButton.classList.add('right-button');
   rightButton.textContent = ` > `;
+  rightButton.addEventListener('click',()=>rightButtonPressed(carousel));
   carousel.appendChild(rightButton);
 }
 
+function leftButtonPressed (imageContainer) {
+  let images = imageContainer.childNodes;
+  imageContainer.insertBefore(images[images.length-2],images[1]);
+  images[1].style.display = `none`;
+  images[2].style.display = `none`;
+  for (let i=3; i<images.length-3; i++) {
+    images[i].style.display = `inline-block`;
+  }
+  images[images.length-3].style.display = `none`;
+  images[images.length-2].style.display = `none`;
+}
+
+function rightButtonPressed (imageContainer) {
+  let images = imageContainer.childNodes;
+  imageContainer.insertBefore(images[1],images[images.length-1]);
+  images[1].style.display = `none`;
+  images[2].style.display = `none`;
+  for (let i=3; i<images.length-3; i++) {
+    images[i].style.display = `inline-block`;
+  }
+  images[images.length-3].style.display = `none`;
+  images[images.length-2].style.display = `none`;
+}
+
 makeCarousel();
-const allImages = document.querySelectorAll('.carousel img');
-console.log(allImages);
