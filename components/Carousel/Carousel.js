@@ -23,6 +23,9 @@ function addImage (container, url, isVisible) {
   const image = document.createElement('img');
   image.src = url;
   if (isVisible) { image.style.display = `inline-block`; }
+  //image.style.position = `relative`;
+  //image.style.transition = `all 1s`;
+  image.style.zIndex = `-1`;
   container.appendChild(image);
 }
 
@@ -35,6 +38,7 @@ function makeCarousel () {
   const leftButton = document.createElement('div');
   leftButton.classList.add('left-button');
   leftButton.textContent = ` < `;
+  leftButton.style.zIndex = `2`;
   leftButton.addEventListener('click',()=>leftButtonPressed(carousel));
   carousel.appendChild(leftButton);
 
@@ -50,18 +54,34 @@ function makeCarousel () {
   const rightButton = document.createElement('div');
   rightButton.classList.add('right-button');
   rightButton.textContent = ` > `;
+  rightButton.style.zIndex = `2`;
   rightButton.addEventListener('click',()=>rightButtonPressed(carousel));
   carousel.appendChild(rightButton);
+
+  window.addEventListener('load',()=>onLoad(carousel));
+}
+
+function onLoad (imageContainer) {
+  let images = imageContainer.childNodes;
+  gsap.to(images[1], {duration: 0, x: -500});
+  gsap.to(images[2], {duration: 0, x: -500});
+  gsap.to(images[images.length-3], {duration: 0, x: 1500});
+  gsap.to(images[images.length-2], {duration: 0, x: 1500});
 }
 
 function leftButtonPressed (imageContainer) {
   let images = imageContainer.childNodes;
   imageContainer.insertBefore(images[images.length-2],images[1]);
-  images[1].style.display = `none`;
-  images[2].style.display = `none`;
   for (let i=3; i<images.length-3; i++) {
+    gsap.to(images[i], {duration: 1, x:0 });
     images[i].style.display = `inline-block`;
   }
+  gsap.to(images[1], {duration: 0, x: -500});
+  gsap.to(images[2], {duration: 0, x: -500});
+  gsap.to(images[images.length-3], {duration: 0, x: 1500});
+  gsap.to(images[images.length-2], {duration: 0, x: 1500});
+  images[1].style.display = `none`;
+  images[2].style.display = `none`;
   images[images.length-3].style.display = `none`;
   images[images.length-2].style.display = `none`;
 }
@@ -69,11 +89,16 @@ function leftButtonPressed (imageContainer) {
 function rightButtonPressed (imageContainer) {
   let images = imageContainer.childNodes;
   imageContainer.insertBefore(images[1],images[images.length-1]);
-  images[1].style.display = `none`;
-  images[2].style.display = `none`;
   for (let i=3; i<images.length-3; i++) {
+    gsap.to(images[i], {duration: 1, x:0 });
     images[i].style.display = `inline-block`;
   }
+  gsap.to(images[1], {duration: 0, x: -500});
+  gsap.to(images[2], {duration: 0, x: -500});
+  gsap.to(images[images.length-3], {duration: 0, x: 1500});
+  gsap.to(images[images.length-2], {duration: 0, x: 1500});
+  images[1].style.display = `none`;
+  images[2].style.display = `none`;
   images[images.length-3].style.display = `none`;
   images[images.length-2].style.display = `none`;
 }
