@@ -23,7 +23,7 @@ function addImage (container, url, isVisible) {
   const image = document.createElement('img');
   image.src = url;
   if (isVisible) { image.style.display = `inline-block`; }
-  //image.style.position = `relative`;
+  image.style.position = `relative`;
   //image.style.transition = `all 1s`;
   image.style.zIndex = `-1`;
   container.appendChild(image);
@@ -33,28 +33,32 @@ function makeCarousel () {
   const carousel = document.createElement('div');
   carousel.classList.add('carousel');
   carousel.style.height = `100px`;
+  carousel.style.left = `-50%`;
+  carousel.style.width = `200%`;
   carouselContainer.appendChild(carousel);
 
   const leftButton = document.createElement('div');
   leftButton.classList.add('left-button');
   leftButton.textContent = ` < `;
   leftButton.style.zIndex = `2`;
+  leftButton.style.left = `27%`;
   leftButton.addEventListener('click',()=>leftButtonPressed(carousel));
   carousel.appendChild(leftButton);
 
-  addImage(carousel, `./assets/carousel/trees.jpeg`, false);
-  addImage(carousel, `./assets/carousel/turntable.jpeg`, false);
+  addImage(carousel, `./assets/carousel/trees.jpeg`, true);
+  addImage(carousel, `./assets/carousel/turntable.jpeg`, true);
   addImage(carousel, `./assets/carousel/mountains.jpeg`, true);
   addImage(carousel, `./assets/carousel/computer.jpeg`, true);
   addImage(carousel, `./assets/carousel/trees.jpeg`, true);
   addImage(carousel, `./assets/carousel/turntable.jpeg`,true);
-  addImage(carousel, `./assets/carousel/mountains.jpeg`, false);
-  addImage(carousel, `./assets/carousel/computer.jpeg`, false);
+  addImage(carousel, `./assets/carousel/mountains.jpeg`, true);
+  addImage(carousel, `./assets/carousel/computer.jpeg`, true);
 
   const rightButton = document.createElement('div');
   rightButton.classList.add('right-button');
   rightButton.textContent = ` > `;
   rightButton.style.zIndex = `2`;
+  rightButton.style.right = `27%`;
   rightButton.addEventListener('click',()=>rightButtonPressed(carousel));
   carousel.appendChild(rightButton);
 
@@ -63,44 +67,22 @@ function makeCarousel () {
 
 function onLoad (imageContainer) {
   let images = imageContainer.childNodes;
-  gsap.to(images[1], {duration: 0, x: -500});
-  gsap.to(images[2], {duration: 0, x: -500});
-  gsap.to(images[images.length-3], {duration: 0, x: 1500});
-  gsap.to(images[images.length-2], {duration: 0, x: 1500});
+  //gsap.to(images[1], {duration: 0, x: -500});
+  //gsap.to(images[2], {duration: 0, x: -500});
+  //gsap.to(images[images.length-3], {duration: 0, x: 1500});
+  //gsap.to(images[images.length-2], {duration: 0, x: 1500});
 }
 
 function leftButtonPressed (imageContainer) {
   let images = imageContainer.childNodes;
   imageContainer.insertBefore(images[images.length-2],images[1]);
-  for (let i=3; i<images.length-3; i++) {
-    gsap.to(images[i], {duration: 1, x:0 });
-    images[i].style.display = `inline-block`;
-  }
-  gsap.to(images[1], {duration: 0, x: -500});
-  gsap.to(images[2], {duration: 0, x: -500});
-  gsap.to(images[images.length-3], {duration: 0, x: 1500});
-  gsap.to(images[images.length-2], {duration: 0, x: 1500});
-  images[1].style.display = `none`;
-  images[2].style.display = `none`;
-  images[images.length-3].style.display = `none`;
-  images[images.length-2].style.display = `none`;
+  gsap.fromTo(imageContainer, {x: `-12.5%`}, {duration: 1, x: 0});
 }
 
 function rightButtonPressed (imageContainer) {
   let images = imageContainer.childNodes;
   imageContainer.insertBefore(images[1],images[images.length-1]);
-  for (let i=3; i<images.length-3; i++) {
-    gsap.to(images[i], {duration: 1, x:0 });
-    images[i].style.display = `inline-block`;
-  }
-  gsap.to(images[1], {duration: 0, x: -500});
-  gsap.to(images[2], {duration: 0, x: -500});
-  gsap.to(images[images.length-3], {duration: 0, x: 1500});
-  gsap.to(images[images.length-2], {duration: 0, x: 1500});
-  images[1].style.display = `none`;
-  images[2].style.display = `none`;
-  images[images.length-3].style.display = `none`;
-  images[images.length-2].style.display = `none`;
+  gsap.fromTo(imageContainer, {x: `12.5%`}, {duration: 1, x: 0});
 }
 
 makeCarousel();
